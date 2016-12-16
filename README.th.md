@@ -20,11 +20,13 @@ Requirements
 Usage
 -----
 ### Path Environment
+<pre>
 .
 └── works
     ├── phpprojects
     ├── vagrant-lamp
     └── wordpress
+</pre>
 ### Startup
 
 1. Download one of the releases available [https://github.com/mattandersen/vagrant-lamp/releases](https://github.com/mattandersen/vagrant-lamp/releases)
