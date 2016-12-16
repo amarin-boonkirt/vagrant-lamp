@@ -6,7 +6,7 @@ php_config_file="/etc/php5/apache2/php.ini"
 xdebug_config_file="/etc/php5/mods-available/xdebug.ini"
 mysql_config_file="/etc/mysql/my.cnf"
 default_apache_index="/var/www/html/index.html"
-project_web_root="src"
+project_web_root="/var/www/html"
 
 # This function is called at the very bottom of the file
 main() {
@@ -17,11 +17,14 @@ main() {
 	apache_go
 	mysql_go
 	php_go
+	phpcms_go
 	autoremove_go
 }
 
 repositories_go() {
-	echo "NOOP"
+	"cp" -f /vagrant/src/etc/apt/sources.list /etc/apt/sources.list
+
+	cp -f /vagrant/src/index.php /var/www/html/
 }
 
 update_go() {
@@ -47,24 +50,23 @@ tools_go() {
 
 apache_go() {
 	# Install Apache
-	apt-get -y install apache2
-
-	sed -i "s/^\(.*\)www-data/\1vagrant/g" ${apache_config_file}
-	chown -R vagrant:vagrant /var/log/apache2
+	apt-get -y install apache2	
 
 	if [ ! -f "${apache_vhost_file}" ]; then
 		cat << EOF > ${apache_vhost_file}
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
-    DocumentRoot /vagrant/${project_web_root}
+    DocumentRoot ${project_web_root}
     LogLevel debug
 
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
 
-    <Directory /vagrant/${project_web_root}>
+    <Directory ${project_web_root}>
         AllowOverride All
         Require all granted
+        DirectoryIndex index.php
+        DirectoryIndex index.html
     </Directory>
 </VirtualHost>
 EOF
@@ -108,6 +110,20 @@ EOF
 		chmod +x phpunit-old.phar
 		mv phpunit-old.phar /usr/local/bin/phpunit
 	fi
+}
+
+phpcms_go() {
+    cd /usr/src
+    wget https://files.phpmyadmin.net/phpMyAdmin/4.6.5.2/phpMyAdmin-4.6.5.2-english.tar.gz
+    tar -xvf phpMyAdmin-4.6.5.2-english.tar.gz
+    mv phpMyAdmin-4.6.5.2-english /var/www/html/phpmyadmin
+
+    wget https://wordpress.org/latest.tar.gz
+    tar -xvf latest.tar.gz
+    mv wordpress /var/www/html/wordpress
+	chown www-data:www-data -R /var/www/html/wordpress
+    rm -f phpMyAdmin-4.6.5.2-english.tar.gz
+    rm -f latest.tar.gz
 }
 
 mysql_go() {
