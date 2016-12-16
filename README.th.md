@@ -78,4 +78,8 @@ The web root is located in the project directory at `src/` and you can install y
 And like any other vagrant file you have SSH access with
 ```
 $ vagrant ssh
+
+### Need to run on Windows
+
+Please see instruction in this document <http://www.jeffgeerling.com/blog/2016/developing-virtualbox-and-vagrant-on-windows>
 ```
