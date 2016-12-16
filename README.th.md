@@ -16,10 +16,11 @@ Requirements
 * VirtualBox <http://www.virtualbox.org>
 * Vagrant <http://www.vagrantup.com>
 * Git <http://git-scm.com/>
+* BIOS Intel VT-x virtualization must enable
 
 Usage
 -----
-### Path Environment
+### Prepare Path Environment
 <pre>
 .
 └── works
@@ -27,9 +28,19 @@ Usage
     ├── vagrant-lamp
     └── wordpress
 </pre>
+
+### Update local domain
+
+For Windows C:\Windows\System32\drivers\hosts
+
+For Ubuntu /etc/hosts
+
+Add this
+192.168.33.10 local.dev
+
 ### Startup
 
-1. Download one of the releases available [https://github.com/mattandersen/vagrant-lamp/releases](https://github.com/mattandersen/vagrant-lamp/releases)
+1. Download one of the releases available [https://github.com/amarin-boonkirt/vagrant-lamp/releases](https://github.com/amarin-boonkirt/vagrant-lamp/releases)
 2. Extract the ZIP file.
 3. From the command-line:
 ```
@@ -41,7 +52,7 @@ That is pretty simple.
 ### Connecting
 
 #### Apache
-The Apache server is available at <http://localhost:8888>
+The Apache server is available at <http://local.dev>
 
 #### MySQL
 Externally the MySQL server is available at port 8889, and when running on the VM it is available as a socket or at port 3306 as usual.
